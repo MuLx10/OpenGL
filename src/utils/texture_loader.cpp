@@ -10,7 +10,7 @@
 #include <stb_image.h>
 
 
-GLuint load_texture(const char *imagepath, int* width, int* height, int* channels){
+GLuint load_texture(const char *imagepath, int* width, int* height, int* channels, int idx = 0){
 	stbi_set_flip_vertically_on_load(true); 
 	unsigned char *texture_data = stbi_load(imagepath, width, height, channels, 3);
 	
@@ -21,7 +21,7 @@ GLuint load_texture(const char *imagepath, int* width, int* height, int* channel
 	// Create one OpenGL texture
 	GLuint textureID;
 	glGenTextures(1, &textureID);
-	
+
 	// "Bind" the newly created texture : all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
 

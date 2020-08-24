@@ -1,7 +1,7 @@
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <vector>
 // Include GLEW
 #include <GL/glew.h>
 
@@ -14,14 +14,24 @@
 
 
 static GLfloat g_vertex_buffer_data[] = { 
-	//x     y     z     r     g     b     tex cords
-	-0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f, 0.0f, 0.0f, // bottom left
-	 0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f, 0.0f, // bottom right
-	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, // top right
+	//x     y     z     r     g     b        sampler_id tex_cords   
+	-0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    0.0f,      0.0f, 0.0f, // bottom left
+	 0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    0.0f,      1.0f, 0.0f, // bottom right
+	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
 
-	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f, // top right
-	-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.5f, 0.0f, 1.0f, // top left 
-	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.5f, 0.0f, 0.0f  // bottom left
+	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
+	-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    0.0f,      0.0f, 1.0f, // top left 
+	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    0.0f,      0.0f, 0.0f,  // bottom left
+
+
+
+	-0.25f, -0.25f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      0.0f, 0.0f, // bottom left
+	 0.25f, -0.25f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      1.0f, 0.0f, // bottom right
+	 0.25f,  0.25f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
+
+	 0.25f,  0.25f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
+	-0.25f,  0.25f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 1.0f, // top left 
+	-0.25f, -0.25f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 0.0f  // bottom left
 };
 
 class OGLTexture
@@ -35,21 +45,53 @@ public:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
 		glBindVertexArray(vertexArrayID);
+
+		// 1st attribute buffer : vertices
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(
+			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			9 * sizeof(float),                  // stride
+			(void*)0            // array buffer offset
+		);
+
+
+		// 2nd attribute buffer : vertices
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+
+		// 3rd attribute buffer : vertices
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+
+		// 4th attribute buffer : vertices
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(7 * sizeof(float)));
 	}
+
 	GLuint InitShaders(const char * vertex_file_path,const char * fragment_file_path){
 		// Create and compile our GLSL program from the shaders
 		programID = LoadShaders(vertex_file_path, fragment_file_path);
 		return programID;
 	}
 
-	GLuint LoadTexture(const char *imagepath){
+
+	GLuint LoadTexture(const char *imagePath, const char *samplerUniform){
+		int idx = textureIDs.size();
 		int width, height, channels;
-		textureID = load_texture(imagepath, &width, &height, &channels);
+		GLuint textureID = load_texture(imagePath, &width, &height, &channels, idx);
 		
 		// Get a handle for our "texture_sampler" uniform fragment shader
-		GLuint textureHandler  = glGetUniformLocation(programID, "texture_sampler");
-		glUniform1i(textureHandler, 0);
+		glUseProgram(programID);
+		glUniform1i(glGetUniformLocation(programID, samplerUniform), idx);
+
 		return textureID;
+	}
+
+	void AddTexture(const char *imagePath, const char *samplerUniform){
+		textureIDs.push_back(LoadTexture(imagePath, samplerUniform));
 	}
 
 	void Bind(){
@@ -59,41 +101,30 @@ public:
 		// Use our shader
 		glUseProgram(programID);
 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureIDs[0]);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, textureIDs[1]);
+
+
 		glBindVertexArray(vertexArrayID);
 
-		// 1st attribute buffer : vertices
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(
-			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			8 * sizeof(float),                  // stride
-			(void*)0            // array buffer offset
-		);
-
-
-		// 2nd attribute buffer : vertices
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-
-		// 3rd attribute buffer : vertices
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	}
 
 	void Render(){
 		// Draw the triangle !
-		glDrawArrays(GL_TRIANGLES, 0, 3*2); // 6 indices 2 triangle
+		glDrawArrays(GL_TRIANGLES, 0, 3*2*2); // 6 indices 2 triangle
 	}
 
 	void UnBind(){
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		
 	}
 
 	~OGLTexture(){
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+
 		// Cleanup VBO
 		glDeleteBuffers(1, &vertexBufferID);
 		glDeleteVertexArrays(1, &vertexArrayID);
@@ -103,7 +134,7 @@ private:
 	GLuint vertexArrayID;
 	GLuint vertexBufferID;
 	GLuint programID;
-	GLuint textureID;
+	std::vector<GLuint> textureIDs;
 };
 
 
@@ -129,7 +160,7 @@ int InitWindow(){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
-	window = glfwCreateWindow( 640, 480, "OGL Texture", NULL, NULL);
+	window = glfwCreateWindow( 640, 480, "Multi OGL Texture", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
 		getchar();
@@ -169,9 +200,9 @@ int main( void )
 
 
 	OGLTexture ogl_texture;
-	ogl_texture.InitShaders("src/texture/res/vertex.shader", "src/texture/res/fragment.shader");
-	ogl_texture.LoadTexture("src/texture/res/mehul.jpg");
-
+	ogl_texture.InitShaders("src/multi-texture/res/vertex.shader", "src/multi-texture/res/fragment.shader");
+	ogl_texture.AddTexture("src/multi-texture/res/back.jpg", "texture1");
+	ogl_texture.AddTexture("src/multi-texture/res/mehul.jpg", "texture2");
 
 	do{
 

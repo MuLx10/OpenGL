@@ -80,12 +80,6 @@ file(COPY "${CMAKE_SOURCE_DIR}/src/triangle/res/" DESTINATION "${CMAKE_CURRENT_B
 
 
 
-
-
-
-
-
-
 add_executable(texture 
 	src/texture/main.cpp
 	src/utils/shader.cpp
@@ -102,6 +96,26 @@ target_link_libraries(texture
 
 file(COPY "${CMAKE_SOURCE_DIR}/src/texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
 
+
+
+
+
+add_executable(multi-texture 
+	src/multi-texture/main.cpp
+	src/utils/shader.cpp
+	src/utils/shader.hpp
+
+	src/utils/texture_loader.cpp
+	src/utils/texture_loader.hpp
+	
+	src/multi-texture/res/fragment.shader
+	src/multi-texture/res/vertex.shader
+)
+target_link_libraries(multi-texture
+	${ALL_LIBS}
+)
+
+file(COPY "${CMAKE_SOURCE_DIR}/src/multi-texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
 
 
 
