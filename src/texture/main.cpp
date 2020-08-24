@@ -106,10 +106,14 @@ private:
 	GLuint textureID;
 };
 
-int main( void )
-{
-	GLFWwindow* window;
-	
+
+
+
+
+GLFWwindow* window;
+
+int InitWindow(){
+
 	// Initialise GLFW
 	if( !glfwInit() )
 	{
@@ -147,10 +151,23 @@ int main( void )
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
+}
+
+
+
+
+
+int main( void )
+{
+	
+	if(InitWindow() == -1){
+		printf("Exiting\n");
+	}
+
 	// Dark gray background
 	glClearColor(0.3f, 0.3f, 0.3f, 0.3f);
 
-	
+
 	OGLTexture ogl_texture;
 	ogl_texture.InitShaders("src/texture/res/vertex.shader", "src/texture/res/fragment.shader" );
 	ogl_texture.LoadTexture("src/texture/res/mehul.jpg");
