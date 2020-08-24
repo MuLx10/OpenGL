@@ -1,13 +1,14 @@
 #version 330 core
 
-in vec3 fragmentColor;
+in vec3 f_color;
+in vec2 f_coords;
 
 // Ouput data
-out vec3 color;
+out vec4 color;
+
+uniform sampler2D texture_sampler;
 
 void main()
 {
-
-	color = fragmentColor;
-
+	color = texture(texture_sampler, f_coords);
 }

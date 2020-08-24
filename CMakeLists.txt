@@ -34,6 +34,7 @@ include_directories(
 	deps/glfw-3.1.2/include/
 	deps/glm-0.9.7.1/
 	deps/glew-1.13.0/include/
+	deps/stb/include/
 	.
 )
 
@@ -54,6 +55,15 @@ add_definitions(
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
+
+
+
+
+
+
+
+
+
 add_executable(triangle 
 	src/triangle/main.cpp
 	src/utils/shader.cpp
@@ -65,17 +75,37 @@ add_executable(triangle
 target_link_libraries(triangle
 	${ALL_LIBS}
 )
+file(COPY "${CMAKE_SOURCE_DIR}/src/triangle/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+
+
+
+
+
+
+
+
+
+
+add_executable(texture 
+	src/texture/main.cpp
+	src/utils/shader.cpp
+	src/utils/shader.hpp
+	src/utils/texture_loader.cpp
+	src/utils/texture_loader.hpp
+	
+	src/texture/res/fragment.shader
+	src/texture/res/vertex.shader
+)
+target_link_libraries(texture
+	${ALL_LIBS}
+)
+
+file(COPY "${CMAKE_SOURCE_DIR}/src/texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+
+
 
 
 SOURCE_GROUP(src REGULAR_EXPRESSION ".*/src/.*" )
 SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
 
-#add_custom_command(
-#   TARGET triangle POST_BUILD
-#   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/src/triangle/res/" "${CMAKE_CURRENT_BINARY_DIR}/res/" 
-#)
-
-#file(COPY "${CMAKE_SOURCE_DIR}/src/triangle/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
-
-execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_SOURCE_DIR}/src/triangle/res/"
-                                                           "${CMAKE_CURRENT_BINARY_DIR}/res/")
+#execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_SOURCE_DIR}/src/triangle/res/"  "${CMAKE_CURRENT_BINARY_DIR}/res/")
