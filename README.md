@@ -29,3 +29,8 @@ $ make {executable} # eg. make triangle
 $ build/bin/{executable} # eg. build/bin/triangle
 ```
 
+**Supported executable**
+- triangle
+- texture
+- multi-texture
+
