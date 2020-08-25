@@ -59,7 +59,7 @@ int main( void )
 	glBindVertexArray(VertexArrayID);
 
 	// Create and compile our GLSL program from the shaders
-	GLuint programID = LoadShaders( "src/triangle/res/vertex.shader", "src/triangle/res/fragment.shader" );
+	GLuint programID = LoadShaders( "src/01-triangle/res/vertex.shader", "src/01-triangle/res/fragment.shader" );
 
 
 	static const GLfloat g_vertex_buffer_data[] = { 

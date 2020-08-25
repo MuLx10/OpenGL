@@ -13,24 +13,24 @@
 #include <src/utils/texture_loader.hpp>
 
 float vertices[] = {
-	//x     y     z     r     g     b        sampler_id tex_cords   
-	-0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    0.0f,      0.0f, 0.0f, // bottom left
-	 0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    0.0f,      1.0f, 0.0f, // bottom right
-	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
+    //x     y     z     r     g     b        sampler_id tex_cords   
+    -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      0.0f, 0.0f, // bottom left
+     1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      1.0f, 0.0f, // bottom right
+     1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
 
-	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
-	-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    0.0f,      0.0f, 1.0f, // top left 
-	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    0.0f,      0.0f, 0.0f,  // bottom left
+     1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
+    -1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      0.0f, 1.0f, // top left 
+    -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      0.0f, 0.0f,  // bottom left
 
 
 
-	-0.25f, -0.25f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      0.0f, 0.0f, // bottom left
-	 0.25f, -0.25f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      1.0f, 0.0f, // bottom right
-	 0.25f,  0.25f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
+     0.50f, -1.00f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      0.0f, 0.0f, // bottom left
+     1.00f, -1.00f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      1.0f, 0.0f, // bottom right
+     1.00f, -0.50f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
 
-	 0.25f,  0.25f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
-	-0.25f,  0.25f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 1.0f, // top left 
-	-0.25f, -0.25f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 0.0f  // bottom left
+     1.00f, -0.50f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
+     0.50f, -0.50f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 1.0f, // top left 
+     0.50f, -1.00f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 0.0f  // bottom left
 };
 
 
@@ -168,8 +168,8 @@ int main()
     // build and compile our shader zprogram
     // ------------------------------------
     MultiOGLTextures ogl_texture;
-    ogl_texture.InitShaders("src/multi-texture/res/vertex.shader", "src/multi-texture/res/fragment.shader");
-    ogl_texture.LoadTextures("src/multi-texture/res/white.jpg", "src/multi-texture/res/mehul.jpg");
+    ogl_texture.InitShaders("src/03-multi-texture2/res/vertex.shader", "src/03-multi-texture2/res/fragment.shader");
+    ogl_texture.LoadTextures("src/03-multi-texture2/res/white.jpg", "src/03-multi-texture2/res/mehul.jpg");
 
 
 

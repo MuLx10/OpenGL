@@ -14,24 +14,24 @@
 
 
 static GLfloat g_vertex_buffer_data[] = { 
-	//x     y     z     r     g     b        sampler_id tex_cords   
-	-0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    0.0f,      0.0f, 0.0f, // bottom left
-	 0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    0.0f,      1.0f, 0.0f, // bottom right
-	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
+	//x     y     z     r     g     b        tex_id     tex_cords   
+	-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      0.0f, 0.0f, // bottom left
+	 1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      1.0f, 0.0f, // bottom right
+	 1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
 
-	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
-	-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    0.0f,      0.0f, 1.0f, // top left 
-	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    0.0f,      0.0f, 0.0f,  // bottom left
+	 1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      1.0f, 1.0f, // top right
+	-1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      0.0f, 1.0f, // top left 
+	-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f,    0.0f,      0.0f, 0.0f, // bottom left
 
 
 
-	-0.25f, -0.25f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      0.0f, 0.0f, // bottom left
-	 0.25f, -0.25f, 0.0f, 0.5f, 1.0f, 1.0f, 1.0f,      1.0f, 0.0f, // bottom right
-	 0.25f,  0.25f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
+	-0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    1.0f,      0.0f, 0.0f, // bottom left
+	 0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 1.0f,    1.0f,      1.0f, 0.0f, // bottom right
+	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    1.0f,      1.0f, 1.0f, // top right
 
-	 0.25f,  0.25f, 0.0f, 1.0f, 0.5f, 1.0f, 1.0f,      1.0f, 1.0f, // top right
-	-0.25f,  0.25f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 1.0f, // top left 
-	-0.25f, -0.25f, 0.0f, 1.0f, 1.0f, 0.5f, 1.0f,      0.0f, 0.0f  // bottom left
+	 0.5f,  0.5f, 0.0f, 1.0f, 0.5f, 1.0f,    1.0f,      1.0f, 1.0f, // top right
+	-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    1.0f,      0.0f, 1.0f, // top left 
+	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.5f,    1.0f,      0.0f, 0.0f  // bottom left
 };
 
 class OGLTexture
@@ -91,7 +91,8 @@ public:
 	}
 
 	void AddTexture(const char *imagePath, const char *samplerUniform){
-		textureIDs.push_back(LoadTexture(imagePath, samplerUniform));
+		GLuint textureID = LoadTexture(imagePath, samplerUniform);
+		textureIDs.push_back(textureID);
 	}
 
 	void Bind(){
@@ -200,9 +201,9 @@ int main( void )
 
 
 	OGLTexture ogl_texture;
-	ogl_texture.InitShaders("src/multi-texture/res/vertex.shader", "src/multi-texture/res/fragment.shader");
-	ogl_texture.AddTexture("src/multi-texture/res/back.jpg", "texture1");
-	ogl_texture.AddTexture("src/multi-texture/res/mehul.jpg", "texture2");
+	ogl_texture.InitShaders("src/03-multi-texture/res/vertex.shader", "src/03-multi-texture/res/fragment.shader");
+	ogl_texture.AddTexture("src/03-multi-texture/res/back.jpg", "texture1");
+	ogl_texture.AddTexture("src/03-multi-texture/res/mehul.jpg", "texture2");
 
 	do{
 

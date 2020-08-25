@@ -38,9 +38,6 @@ include_directories(
 	.
 )
 
-
-
-
 set(ALL_LIBS
 	${OPENGL_LIBRARY}
 	glfw
@@ -55,7 +52,8 @@ add_definitions(
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
-
+SOURCE_GROUP(src REGULAR_EXPRESSION ".*/src/.*" )
+SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
 
 
 
@@ -65,61 +63,79 @@ add_definitions(
 
 
 add_executable(triangle 
-	src/triangle/main.cpp
+	src/01-triangle/main.cpp
 	src/utils/shader.cpp
 	src/utils/shader.hpp
 	
-	src/triangle/res/fragment.shader
-	src/triangle/res/vertex.shader
+	src/01-triangle/res/fragment.shader
+	src/01-triangle/res/vertex.shader
 )
 target_link_libraries(triangle
 	${ALL_LIBS}
 )
-file(COPY "${CMAKE_SOURCE_DIR}/src/triangle/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+file(COPY "${CMAKE_SOURCE_DIR}/src/01-triangle/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
 
 
 
 
 add_executable(texture 
-	src/texture/main.cpp
+	src/02-texture/main.cpp
 	src/utils/shader.cpp
 	src/utils/shader.hpp
 	src/utils/texture_loader.cpp
 	src/utils/texture_loader.hpp
 	
-	src/texture/res/fragment.shader
-	src/texture/res/vertex.shader
+	src/02-texture/res/fragment.shader
+	src/02-texture/res/vertex.shader
 )
 target_link_libraries(texture
 	${ALL_LIBS}
 )
 
-file(COPY "${CMAKE_SOURCE_DIR}/src/texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+file(COPY "${CMAKE_SOURCE_DIR}/src/02-texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
 
 
 
 
 
 add_executable(multi-texture 
-	src/multi-texture/main.cpp
+	src/03-multi-texture/main.cpp
 	src/utils/shader.cpp
 	src/utils/shader.hpp
 
 	src/utils/texture_loader.cpp
 	src/utils/texture_loader.hpp
 	
-	src/multi-texture/res/fragment.shader
-	src/multi-texture/res/vertex.shader
+	src/03-multi-texture/res/fragment.shader
+	src/03-multi-texture/res/vertex.shader
 )
 target_link_libraries(multi-texture
 	${ALL_LIBS}
 )
 
-file(COPY "${CMAKE_SOURCE_DIR}/src/multi-texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+file(COPY "${CMAKE_SOURCE_DIR}/src/03-multi-texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
 
 
 
-SOURCE_GROUP(src REGULAR_EXPRESSION ".*/src/.*" )
-SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
 
-#execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_SOURCE_DIR}/src/triangle/res/"  "${CMAKE_CURRENT_BINARY_DIR}/res/")
+add_executable(controls 
+	src/04-controls/main.cpp
+	src/utils/shader.cpp
+	src/utils/shader.hpp
+
+	src/utils/texture_loader.cpp
+	src/utils/texture_loader.hpp
+
+	src/utils/controls.cpp
+	src/utils/controls.hpp
+	
+	src/04-controls/res/fragment.shader
+	src/04-controls/res/vertex.shader
+)
+target_link_libraries(controls
+	${ALL_LIBS}
+)
+
+file(COPY "${CMAKE_SOURCE_DIR}/src/04-controls/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+
+
