@@ -26,7 +26,8 @@ $ make {executable} # eg. make triangle
 ## Run
 
 ```bash
-$ build/bin/{executable} # eg. build/bin/triangle
+$ cd src/{project}/ # $ cd src/01-triangle/
+$ {executable} # $./triangle
 ```
 
 **Supported executable**
@@ -34,4 +35,4 @@ $ build/bin/{executable} # eg. build/bin/triangle
 - texture
 - multi-texture
 - controls
-
+- 3d-model
