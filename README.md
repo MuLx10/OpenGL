@@ -4,10 +4,10 @@ Repository containing OpenGL examples implementation.
 ## Deps
 - CMake >= 3
 - g++ (MinGW in Windows)
-- GLFW (present in `deps` extract the zip)
-- GLEW (present in `deps` extract the zip)
-- GLM (present in `deps` extract the zip)
-
+- GLFW      (present in `deps` extract the zip)
+- GLEW      (present in `deps` extract the zip)
+- GLM       (present in `deps` extract the zip)
+- STB_IMAGE (present in `deps` extract the zip)
 ## Build
 
 ```bash
