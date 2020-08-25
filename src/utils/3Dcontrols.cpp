@@ -13,13 +13,13 @@ glm::mat4 getProjectionMatrix(){
 double PI = 3.1412;
 
 // Field of View
-float FoV = 45.0f;
+float FoV = 100.0f;
 
-float speed = 1.0f; // 1 units / second (I don't know what unit, I just added a random value)
+float speed = 3.0f; // 3 units / second (I don't know what unit, I just added a random value)
 
-float R = 5.0f; // Distance from origin/size of object
+float R = 3.0f; // Distance from origin/size of object
 
-float mouseSpeed = 0.001f;
+float mouseSpeed = 0.01f;
 
 void computeMatricesFromInputs(GLFWwindow* window, int width, int height){
 
@@ -45,8 +45,8 @@ void computeMatricesFromInputs(GLFWwindow* window, int width, int height){
 	}
 
 	float angleXZ = mouseSpeed * float(width/2 - xpos );
-	float angleYZ = mouseSpeed * float( height/2 - ypos )/2;
-	glm::vec3 camera = glm::vec3(R*cos(angleXZ)*cos(angleYZ), R*sin(angleYZ) ,R*sin(angleXZ));
+	float angleYZ = mouseSpeed * float( height/2 - ypos );
+	glm::vec3 camera = glm::vec3(R*cos(angleXZ)*cos(angleYZ), R*sin(angleYZ) ,R*sin(angleXZ)*cos(angleYZ));
 	glm::vec3 look = glm::vec3(0,0,0);
 
 

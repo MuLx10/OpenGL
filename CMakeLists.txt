@@ -166,6 +166,9 @@ add_executable(3d-model
 	
 	src/utils/obj_loader.cpp
 	src/utils/obj_loader.hpp
+
+	src/utils/dds_loader.cpp
+	src/utils/dds_loader.hpp
 	
 	src/05-3d-model/res/fragment.shader
 	src/05-3d-model/res/vertex.shader
