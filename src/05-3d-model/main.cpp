@@ -16,6 +16,7 @@ using namespace glm;
 
 #include <src/utils/shader.hpp>
 #include <src/utils/obj_loader.hpp>
+#include <src/utils/dds_loader.hpp>
 #include <src/utils/3Dcontrols.hpp>
 
 
@@ -23,6 +24,15 @@ class Model3D
 {
 public:
 	Model3D(){
+		// Enable depth test
+		glEnable(GL_DEPTH_TEST);
+		
+		// Accept fragment if it closer to the camera than the former one
+		glDepthFunc(GL_LESS); 
+
+		// Cull triangles which normal is not towards the camera
+		glEnable(GL_CULL_FACE);
+
 		GLuint vertexArrayID;
 		glGenVertexArrays(1, &vertexArrayID);
 		glBindVertexArray(vertexArrayID);
@@ -55,6 +65,18 @@ public:
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, uvBufferID);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		return res;
+	}
+
+	void LoadTexture(const char* file_path){
+		// Use our shader
+		glUseProgram(programID);
+
+		// Load the texture
+		textureID = loadDDS(file_path);
+		
+		// Set our "texture_sampler" sampler to use Texture Unit 0
+		glUniform1i(glGetUniformLocation(programID, "texture_sampler"), 0);
 	}
 
 	void Bind(){
@@ -64,6 +86,13 @@ public:
 		// Use our shader
 		glUseProgram(programID);
 
+		// Bind our texture in Texture Unit 0
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+
+
+		// Set our "texture_sampler" sampler to use Texture Unit 0
+		glUniform1i(glGetUniformLocation(programID, "texture_sampler"), 0);
 	}
 
 	void Render(){
@@ -87,10 +116,10 @@ public:
 	}
 
 	GLuint GetProgramID(){return programID;}
-private:
+public:
 	GLuint vertexArrayID;
 	GLuint vertexBufferID, uvBufferID;
-	GLuint programID;
+	GLuint programID, textureID;
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
@@ -145,9 +174,7 @@ int InitWindow(){
 }
 
 
-
-
-int main( void )
+int main( int argc, char const *argv[] )
 {
 	// no gl stuff
 	if(InitWindow() == -1){
@@ -160,9 +187,12 @@ int main( void )
 
 	Model3D obj;
 	obj.InitShaders("res/vertex.shader", "res/fragment.shader");
-	obj.LoadOBJ("res/cube.obj");
+	if(argc>1) obj.LoadOBJ(argv[1]);
+	else obj.LoadOBJ("res/cube.obj");
+	obj.LoadTexture("res/uvmap.DDS");
 
 	do{
+
 		obj.Bind();
 
 		// Use our shader
@@ -178,6 +208,7 @@ int main( void )
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
 		glUniformMatrix4fv(glGetUniformLocation(obj.GetProgramID(), "MVP"), 1, GL_FALSE, &MVP[0][0]);
+
 
 		obj.Render();
 		obj.UnBind();
