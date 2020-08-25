@@ -1,6 +1,6 @@
 # CMake entry point
 cmake_minimum_required (VERSION 3.0)
-project (Tutorials)
+project (OpenGL)
 
 find_package(OpenGL REQUIRED)
 
@@ -59,7 +59,7 @@ SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
 
 
 
-
+###################################################################################
 
 
 add_executable(triangle 
@@ -73,9 +73,13 @@ add_executable(triangle
 target_link_libraries(triangle
 	${ALL_LIBS}
 )
-file(COPY "${CMAKE_SOURCE_DIR}/src/01-triangle/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+add_custom_command(
+   TARGET triangle POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bin/triangle${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/src/01-triangle/"
+)
 
 
+###################################################################################
 
 
 add_executable(texture 
@@ -92,10 +96,14 @@ target_link_libraries(texture
 	${ALL_LIBS}
 )
 
-file(COPY "${CMAKE_SOURCE_DIR}/src/02-texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+add_custom_command(
+   TARGET texture POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bin/texture${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/src/02-texture/"
+)
 
 
 
+###################################################################################
 
 
 add_executable(multi-texture 
@@ -113,9 +121,13 @@ target_link_libraries(multi-texture
 	${ALL_LIBS}
 )
 
-file(COPY "${CMAKE_SOURCE_DIR}/src/03-multi-texture/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+add_custom_command(
+   TARGET multi-texture POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bin/multi-texture${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/src/03-multi-texture/"
+)
 
 
+###################################################################################
 
 
 add_executable(controls 
@@ -136,6 +148,36 @@ target_link_libraries(controls
 	${ALL_LIBS}
 )
 
-file(COPY "${CMAKE_SOURCE_DIR}/src/04-controls/res/" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/res/" )
+add_custom_command(
+   TARGET controls POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bin/controls${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/src/04-controls/"
+)
+
+###################################################################################
 
 
+add_executable(3d-model 
+	src/05-3d-model/main.cpp
+	src/utils/shader.cpp
+	src/utils/shader.hpp
+
+	src/utils/3Dcontrols.cpp
+	src/utils/3Dcontrols.cpp
+	
+	src/utils/obj_loader.cpp
+	src/utils/obj_loader.hpp
+	
+	src/05-3d-model/res/fragment.shader
+	src/05-3d-model/res/vertex.shader
+)
+target_link_libraries(3d-model
+	${ALL_LIBS}
+)
+
+add_custom_command(
+   TARGET 3d-model POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bin/3d-model${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/src/05-3d-model/"
+)
+
+
+###################################################################################

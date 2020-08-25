@@ -168,8 +168,8 @@ int main()
     // build and compile our shader zprogram
     // ------------------------------------
     MultiOGLTextures ogl_texture;
-    ogl_texture.InitShaders("src/03-multi-texture2/res/vertex.shader", "src/03-multi-texture2/res/fragment.shader");
-    ogl_texture.LoadTextures("src/03-multi-texture2/res/white.jpg", "src/03-multi-texture2/res/mehul.jpg");
+    ogl_texture.InitShaders("res/vertex.shader", "res/fragment.shader");
+    ogl_texture.LoadTextures("res/white.jpg", "res/mehul.jpg");
 
 
 

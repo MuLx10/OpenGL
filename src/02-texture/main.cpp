@@ -169,8 +169,8 @@ int main( void )
 
 
 	OGLTexture ogl_texture;
-	ogl_texture.InitShaders("src/02-texture/res/vertex.shader", "src/02-texture/res/fragment.shader");
-	ogl_texture.LoadTexture("src/02-texture/res/mehul.jpg");
+	ogl_texture.InitShaders("res/vertex.shader", "res/fragment.shader");
+	ogl_texture.LoadTexture("res/mehul.jpg");
 
 
 	do{

@@ -201,9 +201,9 @@ int main( void )
 
 
 	OGLTexture ogl_texture;
-	ogl_texture.InitShaders("src/03-multi-texture/res/vertex.shader", "src/03-multi-texture/res/fragment.shader");
-	ogl_texture.AddTexture("src/03-multi-texture/res/back.jpg", "texture1");
-	ogl_texture.AddTexture("src/03-multi-texture/res/mehul.jpg", "texture2");
+	ogl_texture.InitShaders("res/vertex.shader", "res/fragment.shader");
+	ogl_texture.AddTexture("res/back.jpg", "texture1");
+	ogl_texture.AddTexture("res/mehul.jpg", "texture2");
 
 	do{
 

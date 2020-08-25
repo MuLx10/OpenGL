@@ -28,6 +28,7 @@ float verticalAngle = 0.0f;
 float initialFoV = 45.0f;
 
 float speed = 1.0f; // 1 units / second (I don't know what unit, I just added a random value)
+
 bool DEBUG = false;
 
 
