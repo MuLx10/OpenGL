@@ -33,4 +33,5 @@ $ build/bin/{executable} # eg. build/bin/triangle
 - triangle
 - texture
 - multi-texture
+- controls
 
